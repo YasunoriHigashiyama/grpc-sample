@@ -1,0 +1,5 @@
+target/
+.idea/
+*.iml
+app.log
+app.pid
