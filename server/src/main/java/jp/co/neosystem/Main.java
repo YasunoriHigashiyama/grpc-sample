@@ -23,6 +23,7 @@ public class Main {
 		@Override
 		public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
 			HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
+			System.out.println("last name: " + req.getLastName());
 			responseObserver.onNext(reply);
 			responseObserver.onCompleted();
 			return;
