@@ -1,5 +1,5 @@
 target/
 .idea/
 *.iml
-app.log
+*.log
 app.pid

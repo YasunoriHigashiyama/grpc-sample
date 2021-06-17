@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
+import io.grpc.StatusRuntimeException;
 
 public class ClientMain {
 
@@ -30,8 +31,12 @@ public class ClientMain {
 					.setName(str)
 					.build();
 
-			HelloReply reply = stub.sayHello(request);
-			LOGGER.info("Reply: " + reply.getMessage());
+			try {
+				HelloReply reply = stub.sayHello(request);
+				LOGGER.info("Reply: " + reply.getMessage());
+			} catch (StatusRuntimeException e) {
+				LOGGER.info("str: " + str + ", status: " + e.getStatus().toString());
+			}
 			return;
 		};
 
