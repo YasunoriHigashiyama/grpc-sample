@@ -31,6 +31,7 @@ public class Main {
 			HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
 			responseObserver.onNext(reply);
 			responseObserver.onCompleted();
+			LOGGER.info("Hello {}", req.getName());
 			return;
 		}
 	}
