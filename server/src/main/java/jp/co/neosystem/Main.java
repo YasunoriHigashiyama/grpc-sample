@@ -7,7 +7,13 @@ import jp.co.neosystem.grpc.GreeterGrpc;
 import jp.co.neosystem.grpc.HelloReply;
 import jp.co.neosystem.grpc.HelloRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Main {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
 	public static void main(String[] args) throws Exception {
 
 		Server server = ServerBuilder.forPort(6565)
@@ -23,7 +29,6 @@ public class Main {
 		@Override
 		public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
 			HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
-			System.out.println("last name: " + req.getLastName());
 			responseObserver.onNext(reply);
 			responseObserver.onCompleted();
 			return;
