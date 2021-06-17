@@ -9,6 +9,7 @@ import jp.co.neosystem.grpc.HelloRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
@@ -34,8 +35,15 @@ public class ClientMain {
 			return;
 		};
 
-		var strings = List.of("test1", "test2", "test3", "test4", "test5");
-		var spliterator = strings.spliterator();
+		var requests = new ArrayList<String>();
+		for (int i = 0; i < 99999; ++i) {
+			var tmp = String.format("test%d", i);
+			requests.add(tmp);
+		}
+
+		//var strings = List.of("test1", "test2");
+		//var spliterator = strings.spliterator();
+		var spliterator = requests.spliterator();
 		var stream = StreamSupport.stream(spliterator, false);
 
 		stream.parallel().forEach(call);
