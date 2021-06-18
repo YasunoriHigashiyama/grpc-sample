@@ -2,17 +2,19 @@ package jp.co.neosystem;
 
 import io.grpc.*;
 import io.grpc.stub.StreamObserver;
-import jp.co.neosystem.grpc.GreeterGrpc;
-import jp.co.neosystem.grpc.HelloReply;
-import jp.co.neosystem.grpc.HelloRequest;
+import jp.co.neosystem.grpc.*;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -23,6 +25,7 @@ public class Main {
 		//ExecutorService executor = Executors.newFixedThreadPool(10);
 
 		Server server = ServerBuilder.forPort(6565)
+				.addService(new SendMailImpl())
 				.addService(new GreeterImpl())
 				//.executor(executor)
 				//.intercept(new ServerInterceptor() {
@@ -67,6 +70,37 @@ public class Main {
 
 		server.awaitTermination();
 		return;
+	}
+
+	static class SendMailImpl extends SendMailGrpc.SendMailImplBase {
+
+		@Override
+		public void send(MailRequest req, StreamObserver<MailReply> responseObserver) {
+
+			try {
+				Email email = new SimpleEmail();
+
+				email.setHostName("localhost");
+				email.setSmtpPort(10025);
+
+				email.addTo(req.getTo());
+				email.setFrom(req.getFrom());
+				email.setSubject(req.getSubject());
+				email.setMsg(req.getText());
+
+				email.send();
+
+				MailReply reply = MailReply.newBuilder().setStatus(200).build();
+				responseObserver.onNext(reply);
+			} catch (EmailException e) {
+				e.printStackTrace();
+				MailReply reply = MailReply.newBuilder().setStatus(500).build();
+				responseObserver.onNext(reply);
+			}
+
+			responseObserver.onCompleted();
+			return;
+		}
 	}
 
 	static class GreeterImpl extends GreeterGrpc.GreeterImplBase {

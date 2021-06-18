@@ -2,9 +2,7 @@ package jp.co.neosystem;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import jp.co.neosystem.grpc.GreeterGrpc;
-import jp.co.neosystem.grpc.HelloReply;
-import jp.co.neosystem.grpc.HelloRequest;
+import jp.co.neosystem.grpc.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +44,28 @@ public class ClientMain {
 			requests.add(tmp);
 		}
 
-		//var strings = List.of("test1", "test2");
-		//var spliterator = strings.spliterator();
-		var spliterator = requests.spliterator();
+		var strings = List.of("test1", "test2");
+		var spliterator = strings.spliterator();
+		//var spliterator = requests.spliterator();
 		var stream = StreamSupport.stream(spliterator, false);
 
 		stream.parallel().forEach(call);
+
+
+		SendMailGrpc.SendMailBlockingStub mailStub = SendMailGrpc.newBlockingStub(channel);
+		MailRequest request = MailRequest.newBuilder()
+				.setFrom("yasunori@dev.nekoptr.test")
+				.setTo("yasunori@dev.nekoptr.test")
+				.setSubject("test")
+				.setText("This is test mail.")
+				.build();
+
+		try {
+			MailReply reply = mailStub.send(request);
+			LOGGER.info("Reply: " + reply.getMessage());
+		} catch (StatusRuntimeException e) {
+			LOGGER.info(e.getMessage(), e);
+		}
 		return;
 	}
 }

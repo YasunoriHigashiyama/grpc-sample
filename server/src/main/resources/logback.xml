@@ -9,7 +9,9 @@
     </appender>
 
     <root level="DEBUG">
-        <appender-ref ref="CONSOLE"/>
     </root>
 
+    <logger name="jp.co.neosystem">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
 </configuration>
