@@ -6,6 +6,7 @@ import jp.co.neosystem.grpc.GreeterGrpc;
 import jp.co.neosystem.grpc.HelloReply;
 import jp.co.neosystem.grpc.HelloRequest;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,10 +51,11 @@ public class Main {
 		Runtime.getRuntime().addShutdownHook(new Thread(
 				() -> {
 					server.shutdown();
-					executor.shutdown();
 					try {
-						executor.awaitTermination(1000 * 60, TimeUnit.MILLISECONDS);
 						server.awaitTermination();
+
+						executor.shutdown();
+						executor.awaitTermination(1000 * 60, TimeUnit.MILLISECONDS);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -70,6 +72,12 @@ public class Main {
 	static class GreeterImpl extends GreeterGrpc.GreeterImplBase {
 		@Override
 		public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+			try {
+				long waitTime = RandomUtils.nextLong(1000, 1000 * 10);
+				Thread.sleep(waitTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
 			responseObserver.onNext(reply);
 			responseObserver.onCompleted();
