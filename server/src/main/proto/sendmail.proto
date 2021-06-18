@@ -14,6 +14,7 @@ message MailRequest {
   string to = 2;
   string subject = 3;
   string text = 4;
+  repeated bytes attach = 5;
 }
 
 message MailReply {

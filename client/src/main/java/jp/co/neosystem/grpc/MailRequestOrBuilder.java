@@ -54,4 +54,21 @@ public interface MailRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getTextBytes();
+
+  /**
+   * <code>repeated bytes attach = 5;</code>
+   * @return A list containing the attach.
+   */
+  java.util.List<com.google.protobuf.ByteString> getAttachList();
+  /**
+   * <code>repeated bytes attach = 5;</code>
+   * @return The count of attach.
+   */
+  int getAttachCount();
+  /**
+   * <code>repeated bytes attach = 5;</code>
+   * @param index The index of the element to return.
+   * @return The attach at the given index.
+   */
+  com.google.protobuf.ByteString getAttach(int index);
 }

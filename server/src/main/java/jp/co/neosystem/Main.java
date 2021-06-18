@@ -7,10 +7,14 @@ import jp.co.neosystem.grpc.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -78,7 +82,7 @@ public class Main {
 		public void send(MailRequest req, StreamObserver<MailReply> responseObserver) {
 
 			try {
-				Email email = new SimpleEmail();
+				MultiPartEmail email = new MultiPartEmail();
 
 				email.setHostName("localhost");
 				email.setSmtpPort(10025);
@@ -88,11 +92,18 @@ public class Main {
 				email.setSubject(req.getSubject());
 				email.setMsg(req.getText());
 
+				for (int i = 0; i < req.getAttachCount(); ++i) {
+					var attach = req.getAttach(i);
+
+					DataSource source = new ByteArrayDataSource(attach.newInput(), "image/jpeg");
+					email.attach(source, "sample.jpg", "");
+				}
+
 				email.send();
 
 				MailReply reply = MailReply.newBuilder().setStatus(200).build();
 				responseObserver.onNext(reply);
-			} catch (EmailException e) {
+			} catch (EmailException | IOException e) {
 				e.printStackTrace();
 				MailReply reply = MailReply.newBuilder().setStatus(500).build();
 				responseObserver.onNext(reply);

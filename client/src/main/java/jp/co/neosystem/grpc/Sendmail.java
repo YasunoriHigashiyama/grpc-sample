@@ -33,13 +33,13 @@ public final class Sendmail {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016sendmail.proto\022\010sendmail\"F\n\013MailReques" +
+      "\n\016sendmail.proto\022\010sendmail\"V\n\013MailReques" +
       "t\022\014\n\004from\030\001 \001(\t\022\n\n\002to\030\002 \001(\t\022\017\n\007subject\030\003" +
-      " \001(\t\022\014\n\004text\030\004 \001(\t\",\n\tMailReply\022\016\n\006statu" +
-      "s\030\001 \001(\005\022\017\n\007message\030\002 \001(\t2@\n\010SendMail\0224\n\004" +
-      "Send\022\025.sendmail.MailRequest\032\023.sendmail.M" +
-      "ailReply\"\000B\030\n\024jp.co.neosystem.grpcP\001b\006pr" +
-      "oto3"
+      " \001(\t\022\014\n\004text\030\004 \001(\t\022\016\n\006attach\030\005 \003(\014\",\n\tMa" +
+      "ilReply\022\016\n\006status\030\001 \001(\005\022\017\n\007message\030\002 \001(\t" +
+      "2@\n\010SendMail\0224\n\004Send\022\025.sendmail.MailRequ" +
+      "est\032\023.sendmail.MailReply\"\000B\030\n\024jp.co.neos" +
+      "ystem.grpcP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -50,7 +50,7 @@ public final class Sendmail {
     internal_static_sendmail_MailRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_sendmail_MailRequest_descriptor,
-        new java.lang.String[] { "From", "To", "Subject", "Text", });
+        new java.lang.String[] { "From", "To", "Subject", "Text", "Attach", });
     internal_static_sendmail_MailReply_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_sendmail_MailReply_fieldAccessorTable = new

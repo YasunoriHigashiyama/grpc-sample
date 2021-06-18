@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     to_ = "";
     subject_ = "";
     text_ = "";
+    attach_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -42,6 +43,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -76,6 +78,14 @@ private static final long serialVersionUID = 0L;
             text_ = s;
             break;
           }
+          case 42: {
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              attach_ = new java.util.ArrayList<com.google.protobuf.ByteString>();
+              mutable_bitField0_ |= 0x00000001;
+            }
+            attach_.add(input.readBytes());
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -91,6 +101,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000001) != 0)) {
+        attach_ = java.util.Collections.unmodifiableList(attach_); // C
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -260,6 +273,33 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int ATTACH_FIELD_NUMBER = 5;
+  private java.util.List<com.google.protobuf.ByteString> attach_;
+  /**
+   * <code>repeated bytes attach = 5;</code>
+   * @return A list containing the attach.
+   */
+  @java.lang.Override
+  public java.util.List<com.google.protobuf.ByteString>
+      getAttachList() {
+    return attach_;
+  }
+  /**
+   * <code>repeated bytes attach = 5;</code>
+   * @return The count of attach.
+   */
+  public int getAttachCount() {
+    return attach_.size();
+  }
+  /**
+   * <code>repeated bytes attach = 5;</code>
+   * @param index The index of the element to return.
+   * @return The attach at the given index.
+   */
+  public com.google.protobuf.ByteString getAttach(int index) {
+    return attach_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -286,6 +326,9 @@ private static final long serialVersionUID = 0L;
     if (!getTextBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, text_);
     }
+    for (int i = 0; i < attach_.size(); i++) {
+      output.writeBytes(5, attach_.get(i));
+    }
     unknownFields.writeTo(output);
   }
 
@@ -306,6 +349,15 @@ private static final long serialVersionUID = 0L;
     }
     if (!getTextBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, text_);
+    }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < attach_.size(); i++) {
+        dataSize += com.google.protobuf.CodedOutputStream
+          .computeBytesSizeNoTag(attach_.get(i));
+      }
+      size += dataSize;
+      size += 1 * getAttachList().size();
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -330,6 +382,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getSubject())) return false;
     if (!getText()
         .equals(other.getText())) return false;
+    if (!getAttachList()
+        .equals(other.getAttachList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -349,6 +403,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getSubject().hashCode();
     hash = (37 * hash) + TEXT_FIELD_NUMBER;
     hash = (53 * hash) + getText().hashCode();
+    if (getAttachCount() > 0) {
+      hash = (37 * hash) + ATTACH_FIELD_NUMBER;
+      hash = (53 * hash) + getAttachList().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -490,6 +548,8 @@ private static final long serialVersionUID = 0L;
 
       text_ = "";
 
+      attach_ = java.util.Collections.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -516,10 +576,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public jp.co.neosystem.grpc.MailRequest buildPartial() {
       jp.co.neosystem.grpc.MailRequest result = new jp.co.neosystem.grpc.MailRequest(this);
+      int from_bitField0_ = bitField0_;
       result.from_ = from_;
       result.to_ = to_;
       result.subject_ = subject_;
       result.text_ = text_;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        attach_ = java.util.Collections.unmodifiableList(attach_);
+        bitField0_ = (bitField0_ & ~0x00000001);
+      }
+      result.attach_ = attach_;
       onBuilt();
       return result;
     }
@@ -584,6 +650,16 @@ private static final long serialVersionUID = 0L;
         text_ = other.text_;
         onChanged();
       }
+      if (!other.attach_.isEmpty()) {
+        if (attach_.isEmpty()) {
+          attach_ = other.attach_;
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          ensureAttachIsMutable();
+          attach_.addAll(other.attach_);
+        }
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -612,6 +688,7 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object from_ = "";
     /**
@@ -913,6 +990,91 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       text_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.util.List<com.google.protobuf.ByteString> attach_ = java.util.Collections.emptyList();
+    private void ensureAttachIsMutable() {
+      if (!((bitField0_ & 0x00000001) != 0)) {
+        attach_ = new java.util.ArrayList<com.google.protobuf.ByteString>(attach_);
+        bitField0_ |= 0x00000001;
+       }
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @return A list containing the attach.
+     */
+    public java.util.List<com.google.protobuf.ByteString>
+        getAttachList() {
+      return ((bitField0_ & 0x00000001) != 0) ?
+               java.util.Collections.unmodifiableList(attach_) : attach_;
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @return The count of attach.
+     */
+    public int getAttachCount() {
+      return attach_.size();
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @param index The index of the element to return.
+     * @return The attach at the given index.
+     */
+    public com.google.protobuf.ByteString getAttach(int index) {
+      return attach_.get(index);
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @param index The index to set the value at.
+     * @param value The attach to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAttach(
+        int index, com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAttachIsMutable();
+      attach_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @param value The attach to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAttach(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureAttachIsMutable();
+      attach_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @param values The attach to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllAttach(
+        java.lang.Iterable<? extends com.google.protobuf.ByteString> values) {
+      ensureAttachIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, attach_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated bytes attach = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAttach() {
+      attach_ = java.util.Collections.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }

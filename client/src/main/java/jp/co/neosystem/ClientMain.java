@@ -1,5 +1,6 @@
 package jp.co.neosystem;
 
+import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import jp.co.neosystem.grpc.*;
@@ -7,6 +8,11 @@ import jp.co.neosystem.grpc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -17,7 +23,7 @@ public class ClientMain {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClientMain.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 6565)
 				.usePlaintext()
 				.build();
@@ -51,13 +57,19 @@ public class ClientMain {
 
 		stream.parallel().forEach(call);
 
+		ByteString attach = null;
+		try (FileInputStream fileInputStream = new FileInputStream("test.jpg");
+			 BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
+			attach = ByteString.readFrom(bufferedInputStream);
+		}
 
 		SendMailGrpc.SendMailBlockingStub mailStub = SendMailGrpc.newBlockingStub(channel);
 		MailRequest request = MailRequest.newBuilder()
-				.setFrom("yasunori@dev.nekoptr.test")
-				.setTo("yasunori@dev.nekoptr.test")
+				.setFrom("")
+				.setTo("")
 				.setSubject("test")
 				.setText("This is test mail.")
+				.addAttach(attach)
 				.build();
 
 		try {
