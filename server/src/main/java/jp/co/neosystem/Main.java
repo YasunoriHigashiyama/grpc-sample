@@ -20,11 +20,11 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-		ExecutorService executor = Executors.newFixedThreadPool(10);
+		//ExecutorService executor = Executors.newFixedThreadPool(10);
 
 		Server server = ServerBuilder.forPort(6565)
 				.addService(new GreeterImpl())
-				.executor(executor)
+				//.executor(executor)
 				//.intercept(new ServerInterceptor() {
 				//	@Override
 				//	public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(
@@ -54,8 +54,8 @@ public class Main {
 					try {
 						server.awaitTermination();
 
-						executor.shutdown();
-						executor.awaitTermination(1000 * 60, TimeUnit.MILLISECONDS);
+						//executor.shutdown();
+						//executor.awaitTermination(1000 * 60, TimeUnit.MILLISECONDS);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
